@@ -167,6 +167,21 @@ export function Sidebar({ className }: { className?: string }) {
           />
         ))}
       </div>
+
+      <footer className="shrink-0 border-t border-line px-4 py-3">
+        <p className="text-center text-[11px] leading-relaxed text-faint">
+          © {new Date().getFullYear()}{' '}
+          <a
+            href="https://github.com/Vickycoder123"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="font-medium text-muted transition-colors hover:text-brand-text"
+          >
+            Vickycoder123
+          </a>
+          . All rights reserved.
+        </p>
+      </footer>
     </aside>
   )
 }
