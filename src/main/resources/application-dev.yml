@@ -12,15 +12,37 @@ spring:
             hibernate:
                 format_sql: true
 
-#open ai configurations
+# Gemini. Chat goes over Gemini's OpenAI-compatible endpoint (fully spec-compliant),
+# but embeddings MUST use the native Google GenAI starter: Gemini's OpenAI-compatible
+# /embeddings omits the `index` and `usage` fields that the official OpenAI Java SDK
+# (used by Spring AI 2.x) requires, which fails with "`index` is not set".
     ai:
+        model:
+            # Disables the OpenAI EmbeddingModel bean so google-genai supplies it instead.
+            # Chat is unaffected (it keys off spring.ai.model.chat).
+            embedding: none
+
         openai:
-            api-key: ${OPENAI_API_KEY:demo-key}
+            api-key: ${GEMINI_API_KEY:demo-key}
+            base-url: ${AI_BASE_URL:https://generativelanguage.googleapis.com/v1beta/openai}
             chat:
-                model: ${OPENAI_CHAT_MODEL:gpt-4o-mini}
+                model: ${GEMINI_CHAT_MODEL:gemini-3.5-flash}
                 temperature: 0.2
-            embedding:
-                model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
+                # Gemini 3.x models 'think' by default: ~400 tokens and 8-25s for a
+                # one-line answer. 'none' cuts that to ~47 tokens. Raise to low/medium
+                # if answers look shallow.
+                reasoning-effort: ${GEMINI_REASONING_EFFORT:none}
+
+        google:
+            genai:
+                embedding:
+                    api-key: ${GEMINI_API_KEY:demo-key}
+                    text:
+                        model: ${GEMINI_EMBEDDING_MODEL:gemini-embedding-001}
+                        # Gemini defaults to 3072, but pgvector's HNSW index caps at 2000.
+                        # 1536 scores identically to 3072 on MTEB (Matryoshka truncation).
+                        dimensions: ${GEMINI_EMBEDDING_DIMENSIONS:1536}
+                        task-type: RETRIEVAL_DOCUMENT
 
         vectorstore:
             pgvector:
@@ -39,9 +61,8 @@ spring:
         
 # app configurations
 app:
-    reg:
+    rag:
         chunk-size: 600
-        chunk-overlap: 100
         top-k: 5
         similarity-threshold: 0.0
 

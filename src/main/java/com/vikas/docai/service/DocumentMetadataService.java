@@ -37,7 +37,7 @@ public class DocumentMetadataService {
     private final JdbcTemplate jdbcTemplate;
 
 
-
+    @Transactional 
     public DocumentResponseDto uploadAndProcess(MultipartFile file){
         
         String fileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "document";

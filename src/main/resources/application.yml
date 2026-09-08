@@ -3,6 +3,9 @@ spring:
         active: dev
     application:
         name: docai
+    config:
+        # Loads GEMINI_API_KEY from the gitignored .env in the project root.
+        # 'optional:' keeps startup working when .env is absent (CI/Docker use real env vars).
+        import: optional:file:.env[.properties]
 server:
     port: 8080
-    

@@ -36,7 +36,7 @@ public class ProjectConfig {
                 .info(
                         new Info()
                                 .title("DocMind — AI Document Intelligence & RAG backend")
-                                .description("REST API for DocMind: Multi-format document ingestion, vector embeddings with PostgreSQL pgvector, and hybrid conversational Q&A with OpenAI.")
+                                .description("REST API for DocMind: Multi-format document ingestion, vector embeddings with PostgreSQL pgvector, and hybrid conversational Q&A with Google Gemini.")
 
                                 .version("1.0.0")
                                 .contact(new Contact()

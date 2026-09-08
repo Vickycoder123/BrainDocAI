@@ -123,7 +123,7 @@ public class RagService {
     public SearchResultDto searchSimilarChunks(SearchRequestDto request) {
 
 
-        java.util.List<Document> matchedDocs = retrieveRelevantDocuments(request.getQuery(), request.getDocumentId(), request.getTopK(), request.getSimilaritySearch());
+        List<Document> matchedDocs = retrieveRelevantDocuments(request.getQuery(), request.getDocumentId(), request.getTopK(), request.getSimilaritySearch());
 
         List<CitationDto> citations = matchedDocs.stream().map(this::mapToCitation).toList();
 
