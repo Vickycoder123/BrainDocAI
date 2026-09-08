@@ -5,9 +5,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vikas.docai.dto.ApiResponse;
 import com.vikas.docai.dto.DocumentResponseDto;
+import com.vikas.docai.service.DocumentMetadataService;
+
+import java.time.LocalDateTime;
 
 import org.apache.james.mime4j.dom.Multipart;
 import org.springframework.http.HttpStatus;
@@ -27,13 +31,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor 
 public class DocumentController {
 
-    private final DocumentService documentService;
+    private final DocumentMetadataService documentService;
     @PostMapping (value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
         summary = "Upload and index a document(PDF, DOCX, TEXT, MD, CSV)",
         description = "This api is used to upload and index documents files"
     )
-    public ResponseEntity<DocumentResponseDto> uploadDocument(@RequestParam("file")Multipart file)
+    public ResponseEntity<ApiResponse<DocumentResponseDto>> uploadDocument(@RequestParam("file") MultipartFile file)
     {
 
         // process the file
@@ -44,6 +48,7 @@ public class DocumentController {
             .body(ApiResponse.<DocumentResponseDto>builder()
             .success(true)
             .data(documentResponseDto)
+            .timestamp(LocalDateTime.now())
             .message("File indexed successfully")
             .build());
     }
