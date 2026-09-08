@@ -51,8 +51,14 @@ grounded in the retrieved passages — with citations back to the source file, p
 
 ## Architecture
 
+The complete pipeline, from an uploaded file to a cited answer:
+
+![RAG process — ingestion, retrieval and generation](docs/RAGProcess.png)
+
 Two deployable parts and one database. The frontend never talks to Gemini directly; all model access
 is server-side.
+
+### Component view
 
 ```mermaid
 graph LR
