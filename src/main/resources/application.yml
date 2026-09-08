@@ -4,8 +4,31 @@ spring:
     application:
         name: docai
     config:
-        # Loads GEMINI_API_KEY from the gitignored .env in the project root.
-        # 'optional:' keeps startup working when .env is absent (CI/Docker use real env vars).
-        import: optional:file:.env[.properties]
+        # Loads GEMINI_API_KEY from the gitignored .env in the module root.
+        #
+        # These paths resolve against the JVM's working directory, which differs by
+        # launcher: `./mvnw spring-boot:run` runs from the module (DocAiBackend), while
+        # IDE run configurations commonly default to the repository root. Both are
+        # listed so the key is found either way.
+        #
+        # 'optional:' keeps startup working when .env is absent (CI/Docker supply real
+        # env vars instead). Because that failure is silent, ApiKeyValidator logs an
+        # explicit error at startup if no key ends up resolved.
+        import: optional:file:.env[.properties],optional:file:DocAiBackend/.env[.properties]
 server:
     port: 8080
+
+springdoc:
+    # Document only this application's own REST API.
+    #
+    # Kept as a guard: any starter on the classpath can auto-register its own
+    # controllers, and springdoc documents them all by default. A dev dashboard
+    # dependency previously added ~130 endpoints here, burying the eight that
+    # actually belong to DocMind.
+    paths-to-match: /api/v1/**
+    swagger-ui:
+        # Group operations by controller tag and keep a stable order.
+        tags-sorter: alpha
+        operations-sorter: method
+        # Collapse nothing: with only two tags the full list is more useful.
+        doc-expansion: list

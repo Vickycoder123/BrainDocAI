@@ -73,11 +73,6 @@
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-vector-store-advisor</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.julien-dubois.bootui</groupId>
-			<artifactId>bootui-spring-boot-starter</artifactId>
-			<version>1.14.1</version>
-		</dependency>
 
 
 		<dependency>
