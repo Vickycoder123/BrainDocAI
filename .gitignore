@@ -1,1 +1,7 @@
+# macOS
 .DS_Store
+
+# UI reference screenshots the frontend was built from — local design input,
+# not part of the shipped project. The README's own image (docs/screenshot.png)
+# is tracked and unaffected by this rule.
+DocAiFrontend/screenshots/
